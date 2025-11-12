@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gecom ID Card Lookup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Gecom ID Card Lookup</h1>
+            <p class="text-gray-600">Search for records using ID card number</p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex gap-3">
+                <div class="flex-1">
+                    <input
+                        type="text"
+                        id="idInput"
+                        placeholder="Enter ID card number..."
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                </div>
+                <button
+                    id="searchBtn"
+                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                    <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Search</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorBox" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 hidden">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div>
+                    <h3 class="font-semibold text-red-800 mb-1">Error</h3>
+                    <p id="errorMessage" class="text-red-700 text-sm"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsBox" class="bg-white rounded-lg shadow-lg p-6 hidden">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b">
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">Record Found</h2>
+                    <p id="recordId" class="text-gray-600 text-sm"></p>
+                </div>
+            </div>
+
+            <div id="recordData" class="grid gap-4">
+                <!-- Data will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Getting Started -->
+        <div id="gettingStarted" class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
+            <h3 class="font-semibold text-blue-900 mb-2">Getting Started</h3>
+            <p class="text-blue-700 text-sm mb-4">
+                Connected to your Gecom ID Database. Enter an ID number to search for records.
+            </p>
+            <p class="text-blue-600 text-xs">
+                Make sure Row Level Security policies allow public read access.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://fvjqufvcoqtfmfuoqssh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU';
+
+        const idInput = document.getElementById('idInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchIcon = document.getElementById('searchIcon');
+        const loadingIcon = document.getElementById('loadingIcon');
+        const errorBox = document.getElementById('errorBox');
+        const errorMessage = document.getElementById('errorMessage');
+        const resultsBox = document.getElementById('resultsBox');
+        const recordId = document.getElementById('recordId');
+        const recordData = document.getElementById('recordData');
+        const gettingStarted = document.getElementById('gettingStarted');
+
+        async function searchById() {
+            const idValue = idInput.value.trim();
+            
+            if (!idValue) {
+                showError('Please enter an ID card number');
+                return;
+            }
+
+            // Show loading state
+            searchBtn.disabled = true;
+            searchIcon.classList.add('hidden');
+            loadingIcon.classList.remove('hidden');
+            hideError();
+            hideResults();
+
+            try {
+                const idParam = encodeURIComponent(idValue);
+                
+                // Try fetching all records first to see the actual structure
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/Gecom%20ID%20Database?select=*`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'Content-Type': 'application/json',
+                            'Prefer': 'return=representation'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMsg = errorData.message || errorData.hint || errorData.details || `${response.status} ${response.statusText}`;
+                    throw new Error(`Database error: ${errorMsg}`);
+                }
+
+                const result = await response.json();
+                console.log('Result:', result);
+                
+                if (result.length === 0) {
+                    showError('No records found in the database');
+                } else {
+                    // Log the first record to see actual column names
+                    console.log('First record:', result[0]);
+                    console.log('Column names:', Object.keys(result[0]));
+                    
+                    // Find the record with matching ID
+                    const record = result.find(r => {
+                        // Try different possible column names
+                        return r['ID #'] === idValue || 
+                               r['ID#'] === idValue || 
+                               r['id_#'] === idValue ||
+                               r['ID _'] === idValue ||
+                               String(r['ID #']) === idValue;
+                    });
+                    
+                    if (record) {
+                        showResults(record, idValue);
+                    } else {
+                        showError(`No records found for ID: ${idValue}. Available column names: ${Object.keys(result[0]).join(', ')}`);
+                    }
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
+                showError(err.message || 'Failed to fetch data. Please check your database configuration.');
+            } finally {
+                // Hide loading state
+                searchBtn.disabled = false;
+                searchIcon.classList.remove('hidden');
+                loadingIcon.classList.add('hidden');
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorBox.classList.remove('hidden');
+            gettingStarted.classList.add('hidden');
+        }
+
+        function hideError() {
+            errorBox.classList.add('hidden');
+        }
+
+        function showResults(data, id) {
+            recordId.textContent = `ID: ${id}`;
+            
+            recordData.innerHTML = '';
+            
+            for (const [key, value] of Object.entries(data)) {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'border-b border-gray-100 pb-3 last:border-0';
+                
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'text-sm font-semibold text-gray-500 uppercase mb-1';
+                labelDiv.textContent = key.replace(/_/g, ' ');
+                
+                const valueDiv = document.createElement('div');
+                valueDiv.className = 'text-gray-800';
+                valueDiv.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
+                
+                fieldDiv.appendChild(labelDiv);
+                fieldDiv.appendChild(valueDiv);
+                recordData.appendChild(fieldDiv);
+            }
+            
+            resultsBox.classList.remove('hidden');
+            gettingStarted.classList.add('hidden');
+        }
+
+        function hideResults() {
+            resultsBox.classList.add('hidden');
+        }
+
+        // Event listeners
+        searchBtn.addEventListener('click', searchById);
+        idInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchById();
+            }
+        });
+    </script>
+</body>
+</html>
