@@ -3,36 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gecom ID Card Lookup</title>
+    <title>COLDINGEN ID CARD STATUS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-    <div class="max-w-3xl mx-auto">
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6">
+    <div class="max-w-4xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">Gecom ID Card Lookup</h1>
-            <p class="text-gray-600">Search for records using ID card number</p>
+        <div class="text-center mb-8 fade-in">
+            <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="w-20 h-20 bg-blue-500/20 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm">
+                    <svg class="w-12 h-12 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold text-white mb-2">COLDINGEN ID CARD STATUS</h1>
+            </div>
+            <p class="text-slate-300 text-lg">Search for records using ID card number, Form number, or Name of Registrant</p>
         </div>
 
         <!-- Search Box -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-8 mb-6 fade-in border border-white/20">
+            <div class="mb-6">
+                <label for="searchType" class="block text-sm font-semibold text-white mb-3">Search By:</label>
+                <select id="searchType" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm">
+                    <option value="ID_NO" class="text-gray-900">ID Number</option>
+                    <option value="FORM_NO" class="text-gray-900">Form Number</option>
+                    <option value="NAME_OF_REGISTRANT" class="text-gray-900">Name of Registrant</option>
+                </select>
+            </div>
             <div class="flex gap-3">
                 <div class="flex-1">
                     <input
                         type="text"
-                        id="idInput"
-                        placeholder="Enter ID card number..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        id="searchInput"
+                        placeholder="Enter search value..."
+                        class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm"
                     />
                 </div>
                 <button
                     id="searchBtn"
-                    class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                    class="px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
                     <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -47,44 +69,44 @@
         </div>
 
         <!-- Error Message -->
-        <div id="errorBox" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 hidden">
+        <div id="errorBox" class="bg-red-500/20 backdrop-blur-lg border border-red-500/30 rounded-xl p-6 mb-6 hidden fade-in">
             <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <div>
-                    <h3 class="font-semibold text-red-800 mb-1">Error</h3>
-                    <p id="errorMessage" class="text-red-700 text-sm"></p>
+                    <h3 class="font-semibold text-red-300 mb-1">Error</h3>
+                    <p id="errorMessage" class="text-red-200 text-sm"></p>
                 </div>
             </div>
         </div>
 
         <!-- Results -->
-        <div id="resultsBox" class="bg-white rounded-lg shadow-lg p-6 hidden">
-            <div class="flex items-center gap-3 mb-6 pb-4 border-b">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div id="resultsBox" class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-8 hidden fade-in border border-white/20">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-white/20">
+                <div class="w-14 h-14 bg-blue-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <svg class="w-7 h-7 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </div>
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Record Found</h2>
-                    <p id="recordId" class="text-gray-600 text-sm"></p>
+                    <h2 class="text-3xl font-bold text-white">Records Found</h2>
+                    <p id="recordCount" class="text-slate-300 text-sm"></p>
                 </div>
             </div>
 
-            <div id="recordData" class="grid gap-4">
+            <div id="recordData" class="space-y-6">
                 <!-- Data will be inserted here -->
             </div>
         </div>
 
         <!-- Getting Started -->
-        <div id="gettingStarted" class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-            <h3 class="font-semibold text-blue-900 mb-2">Getting Started</h3>
-            <p class="text-blue-700 text-sm mb-4">
-                Connected to your Gecom ID Database. Enter an ID number to search for records.
+        <div id="gettingStarted" class="bg-blue-500/20 backdrop-blur-lg border border-blue-500/30 rounded-xl p-8 text-center fade-in">
+            <h3 class="font-semibold text-blue-300 mb-3 text-xl">Getting Started</h3>
+            <p class="text-blue-200 text-base mb-4">
+                Connected to your Gecom ID Database. Select a search type and enter a value to search for records.
             </p>
-            <p class="text-blue-600 text-xs">
+            <p class="text-blue-300 text-xs">
                 Make sure Row Level Security policies allow public read access.
             </p>
         </div>
@@ -94,22 +116,24 @@
         const SUPABASE_URL = 'https://fvjqufvcoqtfmfuoqssh.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU';
 
-        const idInput = document.getElementById('idInput');
+        const searchType = document.getElementById('searchType');
+        const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
         const searchIcon = document.getElementById('searchIcon');
         const loadingIcon = document.getElementById('loadingIcon');
         const errorBox = document.getElementById('errorBox');
         const errorMessage = document.getElementById('errorMessage');
         const resultsBox = document.getElementById('resultsBox');
-        const recordId = document.getElementById('recordId');
+        const recordCount = document.getElementById('recordCount');
         const recordData = document.getElementById('recordData');
         const gettingStarted = document.getElementById('gettingStarted');
 
-        async function searchById() {
-            const idValue = idInput.value.trim();
+        async function searchRecords() {
+            const type = searchType.value;
+            const value = searchInput.value.trim();
             
-            if (!idValue) {
-                showError('Please enter an ID card number');
+            if (!value) {
+                showError('Please enter a search value');
                 return;
             }
 
@@ -121,17 +145,22 @@
             hideResults();
 
             try {
-                const idParam = encodeURIComponent(idValue);
-                
-                // Try fetching all records first to see the actual structure
+                // Build query based on search type
+                let queryParam = '';
+                if (type === 'NAME_OF_REGISTRANT') {
+                    // For name, use ilike for case-insensitive partial match
+                    queryParam = `${type}=ilike.*${encodeURIComponent(value)}*`;
+                } else {
+                    queryParam = `${type}=eq.${encodeURIComponent(value)}`;
+                }
+
                 const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/Gecom%20ID%20Database?select=*`,
+                    `${SUPABASE_URL}/rest/v1/Gecom%20ID%20Database?${queryParam}&select=NAME_OF_REGISTRANT,ID_NO,FORM_NO,STATUS`,
                     {
                         headers: {
                             'apikey': SUPABASE_ANON_KEY,
                             'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                            'Content-Type': 'application/json',
-                            'Prefer': 'return=representation'
+                            'Content-Type': 'application/json'
                         }
                     }
                 );
@@ -146,27 +175,9 @@
                 console.log('Result:', result);
                 
                 if (result.length === 0) {
-                    showError('No records found in the database');
+                    showError(`No records found for ${type.replace(/_/g, ' ')}: ${value}`);
                 } else {
-                    // Log the first record to see actual column names
-                    console.log('First record:', result[0]);
-                    console.log('Column names:', Object.keys(result[0]));
-                    
-                    // Find the record with matching ID
-                    const record = result.find(r => {
-                        // Try different possible column names
-                        return r['ID #'] === idValue || 
-                               r['ID#'] === idValue || 
-                               r['id_#'] === idValue ||
-                               r['ID _'] === idValue ||
-                               String(r['ID #']) === idValue;
-                    });
-                    
-                    if (record) {
-                        showResults(record, idValue);
-                    } else {
-                        showError(`No records found for ID: ${idValue}. Available column names: ${Object.keys(result[0]).join(', ')}`);
-                    }
+                    showResults(result, value, type);
                 }
             } catch (err) {
                 console.error('Fetch error:', err);
@@ -182,6 +193,7 @@
         function showError(message) {
             errorMessage.textContent = message;
             errorBox.classList.remove('hidden');
+            errorBox.classList.add('fade-in');
             gettingStarted.classList.add('hidden');
         }
 
@@ -189,30 +201,100 @@
             errorBox.classList.add('hidden');
         }
 
-        function showResults(data, id) {
-            recordId.textContent = `ID: ${id}`;
+        function showResults(records, searchValue, searchType) {
+            recordCount.textContent = `${records.length} record(s) found for ${searchType.replace(/_/g, ' ')}: ${searchValue}`;
             
             recordData.innerHTML = '';
             
-            for (const [key, value] of Object.entries(data)) {
-                const fieldDiv = document.createElement('div');
-                fieldDiv.className = 'border-b border-gray-100 pb-3 last:border-0';
+            if (searchType === 'NAME_OF_REGISTRANT') {
+                // For name search, show clickable list of names
+                const nameListDiv = document.createElement('div');
+                nameListDiv.className = 'space-y-3';
                 
-                const labelDiv = document.createElement('div');
-                labelDiv.className = 'text-sm font-semibold text-gray-500 uppercase mb-1';
-                labelDiv.textContent = key.replace(/_/g, ' ');
+                records.forEach((record, index) => {
+                    const nameBtn = document.createElement('button');
+                    nameBtn.className = 'w-full text-left p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors backdrop-blur-sm';
+                    nameBtn.textContent = record.NAME_OF_REGISTRANT;
+                    nameBtn.addEventListener('click', () => showFullRecord(record, index + 1));
+                    nameListDiv.appendChild(nameBtn);
+                });
                 
-                const valueDiv = document.createElement('div');
-                valueDiv.className = 'text-gray-800';
-                valueDiv.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
-                
-                fieldDiv.appendChild(labelDiv);
-                fieldDiv.appendChild(valueDiv);
-                recordData.appendChild(fieldDiv);
+                recordData.appendChild(nameListDiv);
+            } else {
+                // For other searches, show full records
+                records.forEach((record, index) => {
+                    const recordDiv = document.createElement('div');
+                    recordDiv.className = 'bg-white/5 rounded-lg p-6 backdrop-blur-sm border border-white/10 fade-in';
+                    
+                    const recordHeader = document.createElement('h3');
+                    recordHeader.className = 'text-xl font-semibold text-white mb-4';
+                    recordHeader.textContent = `Record ${index + 1}`;
+                    recordDiv.appendChild(recordHeader);
+                    
+                    const fieldsDiv = document.createElement('div');
+                    fieldsDiv.className = 'grid gap-3';
+                    
+                    for (const [key, value] of Object.entries(record)) {
+                        const fieldDiv = document.createElement('div');
+                        fieldDiv.className = 'flex justify-between items-center py-2 border-b border-white/10 last:border-0';
+                        
+                        const labelSpan = document.createElement('span');
+                        labelSpan.className = 'text-sm font-semibold text-slate-300 uppercase';
+                        labelSpan.textContent = key.replace(/_/g, ' ') + ':';
+                        
+                        const valueSpan = document.createElement('span');
+                        valueSpan.className = 'text-white font-medium';
+                        valueSpan.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
+                        
+                        fieldDiv.appendChild(labelSpan);
+                        fieldDiv.appendChild(valueSpan);
+                        fieldsDiv.appendChild(fieldDiv);
+                    }
+                    
+                    recordDiv.appendChild(fieldsDiv);
+                    recordData.appendChild(recordDiv);
+                });
             }
             
             resultsBox.classList.remove('hidden');
+            resultsBox.classList.add('fade-in');
             gettingStarted.classList.add('hidden');
+        }
+
+        function showFullRecord(record, recordNumber) {
+            // Replace the name list with the full record
+            recordData.innerHTML = '';
+            
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'bg-white/5 rounded-lg p-6 backdrop-blur-sm border border-white/10 fade-in';
+            
+            const recordHeader = document.createElement('h3');
+            recordHeader.className = 'text-xl font-semibold text-white mb-4';
+            recordHeader.textContent = `Record ${recordNumber}`;
+            recordDiv.appendChild(recordHeader);
+            
+            const fieldsDiv = document.createElement('div');
+            fieldsDiv.className = 'grid gap-3';
+            
+            for (const [key, value] of Object.entries(record)) {
+                const fieldDiv = document.createElement('div');
+                fieldDiv.className = 'flex justify-between items-center py-2 border-b border-white/10 last:border-0';
+                
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'text-sm font-semibold text-slate-300 uppercase';
+                labelSpan.textContent = key.replace(/_/g, ' ') + ':';
+                
+                const valueSpan = document.createElement('span');
+                valueSpan.className = 'text-white font-medium';
+                valueSpan.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
+                
+                fieldDiv.appendChild(labelSpan);
+                fieldDiv.appendChild(valueSpan);
+                fieldsDiv.appendChild(fieldDiv);
+            }
+            
+            recordDiv.appendChild(fieldsDiv);
+            recordData.appendChild(recordDiv);
         }
 
         function hideResults() {
@@ -220,10 +302,10 @@
         }
 
         // Event listeners
-        searchBtn.addEventListener('click', searchById);
-        idInput.addEventListener('keypress', (e) => {
+        searchBtn.addEventListener('click', searchRecords);
+        searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                searchById();
+                searchRecords();
             }
         });
     </script>
