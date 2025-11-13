@@ -286,14 +286,15 @@
 
             for (const [key, value] of Object.entries(record)) {
                 const fieldDiv = document.createElement('div');
-                fieldDiv.className = 'flex justify-between items-center py-2 border-b border-white/10 last:border-0';
+                // Updated: Responsive flex for mobile stacking
+                fieldDiv.className = 'flex flex-col md:flex-row justify-between items-start md:items-center py-2 border-b border-white/10 last:border-0 gap-1 md:gap-0';
 
                 const labelSpan = document.createElement('span');
                 labelSpan.className = 'text-sm font-semibold text-slate-300 uppercase';
                 labelSpan.textContent = key.replace(/_/g, ' ') + ':';
 
                 const valueSpan = document.createElement('span');
-                valueSpan.className = 'text-white font-medium';
+                valueSpan.className = 'text-white font-medium break-words';  // Added break-words for long text
                 valueSpan.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
 
                 fieldDiv.appendChild(labelSpan);
