@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COLDINGEN ID CARD STATUS</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
         .fade-in {
             animation: fadeIn 0.5s ease-in-out;
@@ -23,293 +24,433 @@
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .professional-bg {
+            background-image: radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 75% 75%, rgba(147, 197, 253, 0.1) 0%, transparent 50%);
         }
     </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-4 md:p-6">
-    <div class="max-w-4xl mx-auto">
+
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 professional-bg p-4 md:p-6">
+    <div class="max-w-5xl mx-auto">
+
         <!-- Header -->
-        <div class="text-center mb-6 md:mb-8 fade-in">
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
-                <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-500/20 rounded-full flex items-center justify-center shadow-lg backdrop-blur-sm">
-                    <svg class="w-8 h-8 md:w-12 md:h-12 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        <header class="text-center mb-8 md:mb-12 fade-in">
+            <div class="flex flex-col items-center justify-center gap-6 mb-6">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-blue-600 rounded-full flex items-center justify-center shadow-xl">
+                    <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-                <h1 class="text-3xl md:text-5xl font-bold text-white mb-2">COLDINGEN ID CARD STATUS</h1>
+
+                <div>
+                    <h1 class="text-5xl md:text-7xl font-extrabold text-black mb-2 drop-shadow-lg">
+                        COLDINGEN ID CARD STATUS
+                    </h1>
+                    <p class="text-gray-600 text-lg md:text-xl font-medium">Official GECOM Coldingen Portal</p>
+                </div>
             </div>
-            <p class="text-slate-300 text-base md:text-lg">Search for records using ID card number, Form number, or Name of Registrant</p>
-        </div>
+
+            <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+                Search for records using ID card number or Form number to check your registration status.
+            </p>
+        </header>
 
         <!-- Search Box -->
-        <div class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-6 md:p-8 mb-6 fade-in border border-white/20">
-            <div class="mb-4 md:mb-6">
-                <label for="searchType" class="block text-sm font-semibold text-white mb-3">Search By:</label>
-                <select id="searchType" class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm">
-                    <option value="ID_NO" class="text-gray-900">ID Number</option>
-                    <option value="FORM_NO" class="text-gray-900">Form Number</option>
-                    <option value="NAME_OF_REGISTRANT" class="text-gray-900">Name of Registrant</option>
-                </select>
+        <section class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 md:p-10 mb-8 fade-in border border-gray-200/50">
+            <div class="mb-6">
+                <fieldset>
+                    <legend class="block text-sm font-semibold text-gray-700 mb-4">Search Criteria (select one):</legend>
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="searchCriteria" id="idRadio" class="w-5 h-5 text-blue-600" aria-describedby="idHelp">
+                            <span class="text-gray-900 font-medium">ID Number</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="radio" name="searchCriteria" id="formRadio" class="w-5 h-5 text-blue-600" aria-describedby="formHelp">
+                            <span class="text-gray-900 font-medium">Form Number</span>
+                        </label>
+                    </div>
+                    <p id="idHelp" class="text-xs text-gray-500 mt-2">Enter a 9-digit number (e.g., 123456789).</p>
+                    <p id="formHelp" class="text-xs text-gray-500 mt-1">Enter 6 digits or less (e.g., 123456).</p>
+                </fieldset>
             </div>
-            <div class="flex flex-col md:flex-row gap-3">
-                <div class="flex-1">
-                    <input
-                        type="text"
-                        id="searchInput"
-                        placeholder="Enter search value..."
-                        class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent backdrop-blur-sm"
-                    />
-                </div>
-                <button
-                    id="searchBtn"
-                    class="px-6 md:px-8 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 disabled:bg-gray-500 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
+
+            <div class="flex flex-col md:flex-row gap-4">
+                <input type="text" id="searchInput"
+                       placeholder="Enter your search value (e.g., 123456789 for ID)..."
+                       class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900"
+                       aria-label="Search input for ID or Form number">
+
+                <button id="searchBtn"
+                        class="px-10 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                        aria-label="Perform search">
                     <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
+
                     <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+                        <path fill="currentColor" class="opacity-75"
+                              d="M4 12a8 8 0 018-8V0C5 0 0 5 0 12h4z"></path>
                     </svg>
-                    <span>Search</span>
+
+                    Search
+                </button>
+
+                <button id="clearBtn"
+                        class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600 transition"
+                        aria-label="Clear search and reset form">
+                    Clear
                 </button>
             </div>
-        </div>
+        </section>
 
-        <!-- Error Message -->
-        <div id="errorBox" class="bg-red-500/20 backdrop-blur-lg border border-red-500/30 rounded-xl p-4 md:p-6 mb-6 hidden fade-in">
+        <!-- Error Box -->
+        <div id="errorBox" class="bg-red-50 border border-red-200 rounded-xl p-6 hidden fade-in">
             <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 md:w-6 md:h-6 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
                 </svg>
                 <div>
-                    <h3 class="font-semibold text-red-300 mb-1">Error</h3>
-                    <p id="errorMessage" class="text-red-200 text-sm"></p>
+                    <h3 class="font-semibold text-red-800 mb-1">Error</h3>
+                    <p id="errorMessage" class="text-red-700 text-sm"></p>
                 </div>
             </div>
         </div>
 
         <!-- Results -->
-        <div id="resultsBox" class="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl p-6 md:p-8 hidden fade-in border border-white/20">
-            <div class="sticky top-0 z-10 bg-white/10 backdrop-blur-lg -mx-6 md:-mx-8 -mt-6 md:-mt-8 px-6 md:px-8 pt-6 md:pt-8 pb-4 border-b border-white/20 rounded-t-xl">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 md:w-14 md:h-14 bg-blue-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                        <svg class="w-6 h-6 md:w-7 md:h-7 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+        <section id="resultsBox" class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 hidden fade-in border border-gray-200/50">
+            <div class="sticky top-0 bg-white/80 backdrop-blur-lg -mx-10 px-10 pt-10 pb-6 border-b border-gray-200/50">
+                <div class="flex items-center gap-4 mb-2">
+                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-white">Records Found</h2>
-                        <p id="recordCount" class="text-slate-300 text-sm"></p>
+                        <h2 class="text-3xl font-bold text-gray-900">Search Results</h2>
+                        <p id="recordCount" class="text-gray-600"></p>
                     </div>
                 </div>
             </div>
 
-            <div id="recordData" class="space-y-4 md:space-y-6 max-h-96 overflow-y-auto pt-4">
-                <!-- Data will be inserted here -->
-            </div>
-        </div>
+            <div id="recordData" class="space-y-6 max-h-96 overflow-y-auto pt-6"></div>
+        </section>
 
-        <!-- Important Notice -->
-        <div id="gettingStarted" class="bg-blue-500/20 backdrop-blur-lg border border-blue-500/30 rounded-xl p-6 md:p-8 text-center fade-in">
-            <h3 class="font-semibold text-blue-300 mb-3 text-lg md:text-xl">Important Notice for Registrants</h3>
-            <p class="text-blue-200 text-sm md:text-base mb-4">
+        <!-- Getting Started Notice (shows by default) -->
+        <section id="gettingStarted" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in">
+            <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
+            <p class="text-blue-800 mb-4 font-medium">
                 Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
             </p>
-            <p class="text-blue-200 text-sm md:text-base mb-4">
+            <p class="text-blue-800 mb-4 font-medium">
                 Office working hours are as follows:
             </p>
-            <ul class="text-blue-200 text-sm md:text-base mb-4 list-disc list-inside">
+            <ul class="text-blue-700 text-sm font-medium mb-4 text-left max-w-md mx-auto">
                 <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
                 <li>Friday: 8:00 AM to 3:30 PM</li>
                 <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
             </ul>
-            <p class="text-blue-200 text-sm md:text-base mb-4">
+            <p class="text-blue-800 mb-2 font-medium">
                 <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
             </p>
-            <p class="text-blue-200 text-sm md:text-base mb-4">
+            <p class="text-blue-800 mb-4 font-medium">
                 <strong>Contact Numbers:</strong> 2704497 / 2704498
             </p>
-            <p class="text-blue-300 text-xs">
-                Ensure you arrive within operating hours for assistance.
+            <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
+        </section>
+
+        <!-- Notice - appears below results -->
+        <section id="importantNotice" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in mt-8 hidden">
+            <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
+            <p class="text-blue-800 mb-4 font-medium">
+                Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
             </p>
+            <p class="text-blue-800 mb-4 font-medium">
+                Office working hours are as follows:
+            </p>
+            <ul class="text-blue-700 text-sm font-medium mb-4 text-left max-w-md mx-auto">
+                <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
+                <li>Friday: 8:00 AM to 3:30 PM</li>
+                <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
+            </ul>
+            <p class="text-blue-800 mb-2 font-medium">
+                <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
+            </p>
+            <p class="text-blue-800 mb-4 font-medium">
+                <strong>Contact Numbers:</strong> 2704497 / 2704498
+            </p>
+            <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
+        </section>
+
+    </div>
+
+    <!-- No Result Popup Modal -->
+    <div id="noResultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">ID Not Ready</h3>
+                <p class="text-gray-700 text-lg mb-6">
+                    Sorry, your Identification Card is not ready. Please check again next week. Thank You for your patience.
+                </p>
+                <button id="closeModalBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
+                    OK
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- COMPLETE SCRIPT -->
+    <!-- Validation Error Popup Modal -->
+    <div id="validationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Invalid Input</h3>
+                <p id="validationMessage" class="text-gray-700 text-lg mb-6"></p>
+                <button id="closeValidationBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-12 py-6 text-center text-gray-500 text-sm">
+        <p>&copy; <span id="currentYear"></span> Guyana Elections Commission (GECOM). All rights reserved.</p>
+    </footer>
+
     <script>
-        console.log('Script started loading'); // Initial debug log
+        const SUPABASE_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU";
 
-        const SUPABASE_URL = 'https://fvjqufvcoqtfmfuoqssh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU';
+        const idRadio = document.getElementById("idRadio");
+        const formRadio = document.getElementById("formRadio");
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const searchIcon = document.getElementById("searchIcon");
+        const loadingIcon = document.getElementById("loadingIcon");
+        const errorBox = document.getElementById("errorBox");
+        const errorMessage = document.getElementById("errorMessage");
+        const resultsBox = document.getElementById("resultsBox");
+        const recordCount = document.getElementById("recordCount");
+        const recordData = document.getElementById("recordData");
+        const gettingStarted = document.getElementById("gettingStarted");
+        const importantNotice = document.getElementById("importantNotice");
+        const noResultModal = document.getElementById("noResultModal");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const validationModal = document.getElementById("validationModal");
+        const validationMessage = document.getElementById("validationMessage");
+        const closeValidationBtn = document.getElementById("closeValidationBtn");
+        const currentYear = document.getElementById("currentYear");
 
-        const searchType = document.getElementById('searchType');
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const searchIcon = document.getElementById('searchIcon');
-        const loadingIcon = document.getElementById('loadingIcon');
-        const errorBox = document.getElementById('errorBox');
-        const errorMessage = document.getElementById('errorMessage');
-        const resultsBox = document.getElementById('resultsBox');
-        const recordCount = document.getElementById('recordCount');
-        const recordData = document.getElementById('recordData');
-        const gettingStarted = document.getElementById('gettingStarted');
+        currentYear.textContent = new Date().getFullYear();
 
-        console.log('Elements retrieved:', { searchType, searchInput, searchBtn });
+        closeModalBtn.addEventListener("click", () => {
+            noResultModal.classList.add("hidden");
+        });
+
+        noResultModal.addEventListener("click", (e) => {
+            if (e.target === noResultModal) {
+                noResultModal.classList.add("hidden");
+            }
+        });
+
+        closeValidationBtn.addEventListener("click", () => {
+            validationModal.classList.add("hidden");
+        });
+
+        validationModal.addEventListener("click", (e) => {
+            if (e.target === validationModal) {
+                validationModal.classList.add("hidden");
+            }
+        });
+
+        idRadio.addEventListener("change", () => { if (idRadio.checked) formRadio.checked = false; });
+        formRadio.addEventListener("change", () => { if (formRadio.checked) idRadio.checked = false; });
+
+        function clearSearch() {
+            searchInput.value = "";
+            idRadio.checked = false;
+            formRadio.checked = false;
+            hideError();
+            hideResults();
+            importantNotice.classList.add("hidden");
+            gettingStarted.classList.remove("hidden");
+        }
+
+        function validateInput(value, criteria) {
+            if (!value.trim()) return "Please enter a search value.";
+            if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
+                return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
+            }
+            if (criteria.includes("FORM_NO") && !/^\d{1,6}$/.test(value)) {
+                return "Form Number must be 6 digits or less. Please enter a valid Form Number with a maximum of 6 digits.";
+            }
+            return null;
+        }
+
+        function showValidationError(message) {
+            validationMessage.textContent = message;
+            validationModal.classList.remove("hidden");
+        }
 
         async function searchRecords() {
-            console.log('Search function called');
-            const type = searchType.value;
             const value = searchInput.value.trim();
-            
-            console.log('Search type:', type, 'Value:', value);
-            
-            if (!value) {
-                showError('Please enter a search value');
+            const selectedCriteria = [];
+            if (idRadio.checked) selectedCriteria.push("ID_NO");
+            if (formRadio.checked) selectedCriteria.push("FORM_NO");
+            if (selectedCriteria.length === 0) {
+                showValidationError("Please select one search criteria.");
+                return;
+            }
+
+            const validationError = validateInput(value, selectedCriteria);
+            if (validationError) {
+                showValidationError(validationError);
                 return;
             }
 
             searchBtn.disabled = true;
-            searchIcon.classList.add('hidden');
-            loadingIcon.classList.remove('hidden');
+            searchIcon.classList.add("hidden");
+            loadingIcon.classList.remove("hidden");
             hideError();
             hideResults();
 
             try {
-                let queryParam = '';
-                if (type === 'NAME_OF_REGISTRANT') {
-                    queryParam = `${type}=ilike.*${value.replace(/ /g, '%')}*`;
-                } else {
-                    queryParam = `${type}=eq.${encodeURIComponent(value)}`;
-                }
+                // Use the secure function instead of direct table access
+                const searchParams = {
+                    search_id_no: idRadio.checked ? value : null,
+                    search_form_no: formRadio.checked ? value : null
+                };
 
-                console.log('Query param:', queryParam);
+                const url = `${SUPABASE_URL}/rest/v1/rpc/search_gecom_id`;
+                console.log("Fetching URL:", url);
+                console.log("Search params:", searchParams);
 
-                const response = await fetch(
-                    `${SUPABASE_URL}/rest/v1/Gecom%20ID%20Database?${queryParam}&select=NAME_OF_REGISTRANT,ID_NO,FORM_NO,STATUS`,
-                    {
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(searchParams)
+                });
 
-                console.log('Response status:', response.status);
+                console.log("Response status:", response.status);
 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({}));
-                    const errorMsg = errorData.message || errorData.hint || errorData.details || `${response.status} ${response.statusText}`;
-                    throw new Error(`Database error: ${errorMsg}`);
+                    const errorText = await response.text();
+                    console.error("Error response:", errorText);
+                    if (response.status === 429) throw new Error("Too many requests. Please try again later.");
+                    else throw new Error(`Server error (${response.status}). Please try again.`);
                 }
 
                 const result = await response.json();
-                console.log('Result:', result);
-                
+                console.log("Result:", result);
+
                 if (result.length === 0) {
-                    showError(`No records found for ${type.replace(/_/g, ' ')}: ${value}`);
+                    noResultModal.classList.remove("hidden");
+                    gettingStarted.classList.add("hidden");
                 } else {
-                    showResults(result, value, type);
+                    showResults(result, value, selectedCriteria.join(" or "));
                 }
             } catch (err) {
-                console.error('Fetch error:', err);
-                showError(err.message || 'Failed to fetch data. Please check your database configuration.');
+                console.error("Fetch error:", err);
+                showError("Unable to connect to the database. Please check your internet connection and try again.");
             } finally {
                 searchBtn.disabled = false;
-                searchIcon.classList.remove('hidden');
-                loadingIcon.classList.add('hidden');
+                searchIcon.classList.remove("hidden");
+                loadingIcon.classList.add("hidden");
             }
         }
 
         function showError(message) {
             errorMessage.textContent = message;
-            errorBox.classList.remove('hidden');
-            errorBox.classList.add('fade-in');
-            gettingStarted.classList.add('hidden');
+            errorBox.classList.remove("hidden");
+            gettingStarted.classList.add("hidden");
         }
 
         function hideError() {
-            errorBox.classList.add('hidden');
+            errorBox.classList.add("hidden");
         }
 
         function hideResults() {
-            resultsBox.classList.add('hidden');
+            resultsBox.classList.add("hidden");
         }
 
         function showResults(records, searchValue, searchTypeVal) {
-            recordCount.textContent = `${records.length} record(s) found for ${searchTypeVal.replace(/_/g, ' ')}: ${searchValue}`;
-            recordData.innerHTML = '';
-            
-            if (searchTypeVal === 'NAME_OF_REGISTRANT') {
-                const nameListDiv = document.createElement('div');
-                nameListDiv.className = 'space-y-3';
-                
-                records.forEach((record, index) => {
-                    const nameBtn = document.createElement('button');
-                    nameBtn.className = 'w-full text-left p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors backdrop-blur-sm';
-                    nameBtn.textContent = record.NAME_OF_REGISTRANT;
-                    nameBtn.addEventListener('click', () => showFullRecord(record, index + 1));
-                    nameListDiv.appendChild(nameBtn);
-                });
-                
-                recordData.appendChild(nameListDiv);
-            } else {
-                records.forEach((record, index) => {
-                    showFullRecord(record, index + 1);
-                });
-            }
+            recordCount.textContent = `${records.length} record(s) found for ${searchTypeVal.replace(/_/g, " ")}: ${searchValue}`;
+            recordData.innerHTML = "";
 
-            resultsBox.classList.remove('hidden');
-            resultsBox.classList.add('fade-in');
-            gettingStarted.classList.add('hidden');
+            records.forEach((record, index) => {
+                showFullRecord(record, index + 1);
+            });
+
+            resultsBox.classList.remove("hidden");
+            importantNotice.classList.remove("hidden");
+            gettingStarted.classList.add("hidden");
         }
 
         function showFullRecord(record, recordNumber) {
-            recordData.innerHTML = '';
-
-            const recordDiv = document.createElement('div');
-            recordDiv.className = 'bg-white/5 rounded-lg p-4 md:p-6 backdrop-blur-sm border border-white/10 fade-in';
-
-            const recordHeader = document.createElement('h3');
-            recordHeader.className = 'text-lg md:text-xl font-semibold text-white mb-4';
-            recordHeader.textContent = `Record ${recordNumber}`;
-            recordDiv.appendChild(recordHeader);
-
-            const fieldsDiv = document.createElement('div');
-            fieldsDiv.className = 'grid gap-3';
-
-            for (const [key, value] of Object.entries(record)) {
-                const fieldDiv = document.createElement('div');
-                // Updated: Responsive flex for mobile stacking
-                fieldDiv.className = 'flex flex-col md:flex-row justify-between items-start md:items-center py-2 border-b border-white/10 last:border-0 gap-1 md:gap-0';
-
-                const labelSpan = document.createElement('span');
-                labelSpan.className = 'text-sm font-semibold text-slate-300 uppercase';
-                labelSpan.textContent = key.replace(/_/g, ' ') + ':';
-
-                const valueSpan = document.createElement('span');
-                valueSpan.className = 'text-white font-medium break-words';  // Added break-words for long text
-                valueSpan.textContent = value !== null && value !== undefined ? String(value) : 'N/A';
-
-                fieldDiv.appendChild(labelSpan);
-                fieldDiv.appendChild(valueSpan);
-                fieldsDiv.appendChild(fieldDiv);
-            }
-
-            recordDiv.appendChild(fieldsDiv);
+            const recordDiv = document.createElement("div");
+            recordDiv.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
+            const statusColor = record.STATUS === "COLLECTED" ? "text-green-700 bg-green-100" : "text-green-700 bg-green-100";
+            const statusIcon = record.STATUS === "COLLECTED" 
+                ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />`
+                : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+            recordDiv.innerHTML = `
+                <div class="flex flex-col items-start gap-2 mb-4">
+                    <h3 class="text-lg font-bold text-gray-900">Record #${recordNumber}</h3>
+                    <span class="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1 ${statusColor}">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            ${statusIcon}
+                        </svg>
+                        ${record.STATUS || "UNKNOWN"}
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600 font-medium">Name of Registrant</p>
+                        <p class="text-base font-semibold text-gray-900">${record.NAME_OF_REGISTRANT || "N/A"}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-medium">ID Number</p>
+                        <p class="text-base font-semibold text-gray-900">${record.ID_NO || "N/A"}</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600 font-medium">Form Number</p>
+                        <p class="text-base font-semibold text-gray-900">${record.FORM_NO || "N/A"}</p>
+                    </div>
+                </div>
+            `;
             recordData.appendChild(recordDiv);
-            resultsBox.classList.remove('hidden');
         }
 
-        searchBtn.addEventListener('click', searchRecords);
-        searchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') searchRecords();
+        searchBtn.addEventListener("click", searchRecords);
+        clearBtn.addEventListener("click", clearSearch);
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") searchRecords();
         });
     </script>
 </body>
