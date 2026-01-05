@@ -303,7 +303,7 @@
             if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
                 return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
             }
-            if (criteria.includes("FORM_NO") && !/^\d{1,6}$/.test(value)) {
+            if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
                 return "Form Number must be 7 digits or less. Please enter a valid Form Number with a maximum of 7 digits.";
             }
             return null;
@@ -455,6 +455,7 @@
     </script>
 </body>
 </html>
+
 
 
 
