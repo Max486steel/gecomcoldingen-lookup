@@ -343,7 +343,7 @@
                     search_form_no: formRadio.checked ? value : null
                 };
 
-                const url = `${SUPABASE_URL}/rest/v1/rpc/search_gecom_id`;
+                const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
                 console.log("Fetching URL:", url);
                 console.log("Search params:", searchParams);
 
@@ -455,6 +455,7 @@
     </script>
 </body>
 </html>
+
 
 
 
