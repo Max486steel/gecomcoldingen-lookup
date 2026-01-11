@@ -148,139 +148,232 @@
         <div id="recordData" class="space-y-6 max-h-96 overflow-y-auto pt-6"></div>
     </section>
 
-    <!-- Footer -->
+    <!-- Getting Started Notice -->
+    <section id="gettingStarted" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in">
+        <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
+        <p class="text-blue-800 mb-4 font-medium">
+            Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
+        </p>
+        <p class="text-blue-800 mb-4 font-medium">
+            Office working hours are as follows:
+        </p>
+        <ul class="text-blue-700 text-sm font-medium mb-4 text-center max-w-md mx-auto">
+            <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
+            <li>Friday: 8:00 AM to 3:30 PM</li>
+            <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
+        </ul>
+        <p class="text-blue-800 mb-2 font-medium">
+            <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
+        </p>
+        <p class="text-blue-800 mb-4 font-medium">
+            <strong>Contact Numbers:</strong> 2704497 / 2704498
+        </p>
+        <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
+    </section>
+
+    <!-- Important Notice Below Results -->
+    <section id="importantNotice" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in mt-8 hidden">
+        <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
+        <p class="text-blue-800 mb-4 font-medium">
+            Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
+        </p>
+        <p class="text-blue-800 mb-4 font-medium">
+            Office working hours are as follows:
+        </p>
+        <ul class="text-blue-700 text-sm font-medium mb-4 text-center max-w-md mx-auto">
+            <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
+            <li>Friday: 8:00 AM to 3:30 PM</li>
+            <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
+        </ul>
+        <p class="text-blue-800 mb-2 font-medium">
+            <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
+        </p>
+        <p class="text-blue-800 mb-4 font-medium">
+            <strong>Contact Numbers:</strong> 2704497 / 2704498
+        </p>
+        <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
+    </section>
+
+    <!-- No Result Modal -->
+    <div id="noResultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">ID Not Ready</h3>
+                <p class="text-gray-700 text-lg mb-6">
+                    Sorry, your Identification Card is not ready. Please check again next week. Thank You for your patience.
+                </p>
+                <button id="closeModalBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Validation Modal -->
+    <div id="validationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Invalid Input</h3>
+                <p id="validationMessage" class="text-gray-700 text-lg mb-6"></p>
+                <button id="closeValidationBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer class="mt-12 py-6 text-center text-gray-500 text-sm">
         <p>&copy; <span id="currentYear"></span> Guyana Elections Commission (GECOM). All rights reserved.</p>
     </footer>
 
+    <script>
+        const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
+
+        const idRadio = document.getElementById("idRadio");
+        const formRadio = document.getElementById("formRadio");
+        const searchInput = document.getElementById("searchInput");
+        const searchBtn = document.getElementById("searchBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const searchIcon = document.getElementById("searchIcon");
+        const loadingIcon = document.getElementById("loadingIcon");
+        const errorBox = document.getElementById("errorBox");
+        const errorMessage = document.getElementById("errorMessage");
+        const resultsBox = document.getElementById("resultsBox");
+        const recordCount = document.getElementById("recordCount");
+        const recordData = document.getElementById("recordData");
+        const gettingStarted = document.getElementById("gettingStarted");
+        const importantNotice = document.getElementById("importantNotice");
+        const noResultModal = document.getElementById("noResultModal");
+        const closeModalBtn = document.getElementById("closeModalBtn");
+        const validationModal = document.getElementById("validationModal");
+        const validationMessage = document.getElementById("validationMessage");
+        const closeValidationBtn = document.getElementById("closeValidationBtn");
+        const currentYear = document.getElementById("currentYear");
+
+        currentYear.textContent = new Date().getFullYear();
+
+        // Event listeners for modals
+        closeModalBtn.addEventListener("click", () => noResultModal.classList.add("hidden"));
+        closeValidationBtn.addEventListener("click", () => validationModal.classList.add("hidden"));
+        noResultModal.addEventListener("click", e => { if(e.target === noResultModal) noResultModal.classList.add("hidden"); });
+        validationModal.addEventListener("click", e => { if(e.target === validationModal) validationModal.classList.add("hidden"); });
+
+        // Radio buttons
+        idRadio.addEventListener("change", () => { if(idRadio.checked) formRadio.checked = false; });
+        formRadio.addEventListener("change", () => { if(formRadio.checked) idRadio.checked = false; });
+
+        function showError(msg){
+            errorMessage.textContent = msg;
+            errorBox.classList.remove("hidden");
+        }
+
+        function hideError(){
+            errorBox.classList.add("hidden");
+        }
+
+        function hideResults(){
+            resultsBox.classList.add("hidden");
+            recordData.innerHTML = "";
+            recordCount.textContent = "";
+        }
+
+        function validateInput(value, criteria){
+            if(!value.trim()) return "Please enter a search value.";
+            if(criteria === "ID_NO" && !/^\d{9}$/.test(value)){
+                return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
+            }
+            if(criteria === "FORM_NO" && !/^\d{1,7}$/.test(value)){
+                return "Form Number must be 7 digits or less. Please enter a valid number.";
+            }
+            return null;
+        }
+
+        function clearSearch(){
+            searchInput.value = "";
+            idRadio.checked = false;
+            formRadio.checked = false;
+            hideError();
+            hideResults();
+            importantNotice.classList.add("hidden");
+            gettingStarted.classList.remove("hidden");
+        }
+
+        clearBtn.addEventListener("click", clearSearch);
+
+        async function performSearch(){
+            hideError();
+            hideResults();
+            gettingStarted.classList.add("hidden");
+            importantNotice.classList.add("hidden");
+
+            const criteria = idRadio.checked ? "ID_NO" : formRadio.checked ? "FORM_NO" : null;
+            const value = searchInput.value.trim();
+
+            const validationError = validateInput(value, criteria);
+            if(validationError){
+                validationMessage.textContent = validationError;
+                validationModal.classList.remove("hidden");
+                return;
+            }
+
+            searchIcon.classList.add("hidden");
+            loadingIcon.classList.remove("hidden");
+
+            try{
+                const res = await fetch(EDGE_FUNCTION_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id_no: criteria==="ID_NO"? value:null, form_no: criteria==="FORM_NO"? value:null })
+                });
+
+                const data = await res.json();
+
+                searchIcon.classList.remove("hidden");
+                loadingIcon.classList.add("hidden");
+
+                if(!data || data.length === 0){
+                    noResultModal.classList.remove("hidden");
+                    return;
+                }
+
+                resultsBox.classList.remove("hidden");
+                recordCount.textContent = `Total Records: ${data.length}`;
+                recordData.innerHTML = data.map(d => `
+                    <div class="p-4 bg-gray-50 rounded-lg shadow-sm">
+                        <p><strong>S/N:</strong> ${d.SER_NO}</p>
+                        <p><strong>Name:</strong> ${d.NAME_OF_REGISTRANT}</p>
+                        <p><strong>ID #:</strong> ${d.ID_NO || "-"}</p>
+                        <p><strong>Form #:</strong> ${d.FORM_NO || "-"}</p>
+                        <p><strong>Status:</strong> ${d.STATUS}</p>
+                    </div>
+                `).join("");
+
+                importantNotice.classList.remove("hidden");
+
+            }catch(err){
+                showError("An error occurred while fetching data. Please try again later.");
+                searchIcon.classList.remove("hidden");
+                loadingIcon.classList.add("hidden");
+            }
+        }
+
+        searchBtn.addEventListener("click", performSearch);
+        searchInput.addEventListener("keypress", e => { if(e.key === "Enter") performSearch(); });
+
+    </script>
+
 </div>
-
-<script>
-    // ================= CONFIGURATION =================
-    const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
-
-    const idRadio = document.getElementById("idRadio");
-    const formRadio = document.getElementById("formRadio");
-    const searchInput = document.getElementById("searchInput");
-    const searchBtn = document.getElementById("searchBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const searchIcon = document.getElementById("searchIcon");
-    const loadingIcon = document.getElementById("loadingIcon");
-    const errorBox = document.getElementById("errorBox");
-    const errorMessage = document.getElementById("errorMessage");
-    const resultsBox = document.getElementById("resultsBox");
-    const recordCount = document.getElementById("recordCount");
-    const recordData = document.getElementById("recordData");
-    const currentYear = document.getElementById("currentYear");
-
-    currentYear.textContent = new Date().getFullYear();
-
-    function clearSearch() {
-        searchInput.value = "";
-        idRadio.checked = false;
-        formRadio.checked = false;
-        hideError();
-        hideResults();
-    }
-
-    function hideError() {
-        errorBox.classList.add("hidden");
-    }
-
-    function hideResults() {
-        resultsBox.classList.add("hidden");
-        recordData.innerHTML = "";
-        recordCount.textContent = "";
-    }
-
-    function validateInput(value, criteria) {
-        if (!value.trim()) return "Please enter a search value.";
-        if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
-            return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
-        }
-        if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
-            return "Form Number must be 7 digits or less. Please enter a valid Form number.";
-        }
-        return null;
-    }
-
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorBox.classList.remove("hidden");
-    }
-
-    function showResults(records) {
-        recordCount.textContent = `${records.length} record(s) found`;
-        recordData.innerHTML = "";
-        records.forEach(record => {
-            const div = document.createElement("div");
-            div.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
-            div.innerHTML = `
-                <p><strong>Name:</strong> ${record.NAME_OF_REGISTRANT}</p>
-                <p><strong>ID Number:</strong> ${record.ID_NO}</p>
-                <p><strong>Form Number:</strong> ${record.FORM_NO}</p>
-                <p><strong>Status:</strong> ${record.STATUS}</p>
-            `;
-            recordData.appendChild(div);
-        });
-        resultsBox.classList.remove("hidden");
-    }
-
-    async function searchRecords() {
-        const value = searchInput.value.trim();
-        const criteria = [];
-        if (idRadio.checked) criteria.push("ID_NO");
-        if (formRadio.checked) criteria.push("FORM_NO");
-
-        if (criteria.length === 0) {
-            showError("Please select a search criteria.");
-            return;
-        }
-
-        const validationError = validateInput(value, criteria);
-        if (validationError) {
-            showError(validationError);
-            return;
-        }
-
-        searchBtn.disabled = true;
-        searchIcon.classList.add("hidden");
-        loadingIcon.classList.remove("hidden");
-        hideError();
-        hideResults();
-
-        try {
-            const payload = {
-                search_id_no: idRadio.checked ? value : null,
-                search_form_no: formRadio.checked ? value : null
-            };
-
-            const res = await fetch(EDGE_FUNCTION_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (!res.ok) throw new Error(`Server error (${res.status})`);
-
-            const data = await res.json();
-
-            if (data.length === 0) showError("No records found.");
-            else showResults(data);
-
-        } catch (err) {
-            console.error(err);
-            showError("Unable to connect to the server. Please try again later.");
-        } finally {
-            searchBtn.disabled = false;
-            searchIcon.classList.remove("hidden");
-            loadingIcon.classList.add("hidden");
-        }
-    }
-
-    searchBtn.addEventListener("click", searchRecords);
-    clearBtn.addEventListener("click", clearSearch);
-    searchInput.addEventListener("keypress", (e) => { if (e.key === "Enter") searchRecords(); });
-</script>
 </body>
 </html>
