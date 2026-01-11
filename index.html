@@ -344,10 +344,10 @@
                 };
 
                 const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
-                console.log("Fetching URL:", url);
+                console.log("Fetching URL:", EDGE_FUNCTION_URL);
                 console.log("Search params:", searchParams);
 
-                const response = await fetch(url, {
+                const response = await fetch(EDGE_FUNCTION_URL, {
                     method: 'POST',
                     headers: {
                         apikey: SUPABASE_ANON_KEY,
@@ -455,6 +455,7 @@
     </script>
 </body>
 </html>
+
 
 
 
