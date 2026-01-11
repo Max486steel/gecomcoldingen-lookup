@@ -36,6 +36,7 @@
         }
     </style>
 </head>
+
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 professional-bg p-4 md:p-6">
 <div class="max-w-5xl mx-auto">
 
@@ -48,6 +49,7 @@
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
             </div>
+
             <div>
                 <h1 class="text-5xl md:text-7xl font-extrabold text-black mb-2 drop-shadow-lg">
                     COLDINGEN ID CARD STATUS
@@ -55,6 +57,7 @@
                 <p class="text-gray-600 text-lg md:text-xl font-medium">Official GECOM Coldingen Portal</p>
             </div>
         </div>
+
         <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
             Search for records using ID card number or Form number to check your Identification Card status.
         </p>
@@ -62,43 +65,50 @@
 
     <!-- Search Box -->
     <section class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 md:p-10 mb-8 fade-in border border-gray-200/50">
-        <fieldset class="mb-6">
-            <legend class="block text-sm font-semibold text-gray-700 mb-4">Search Criteria (select one):</legend>
-            <div class="flex flex-col md:flex-row gap-4">
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="radio" name="searchCriteria" id="idRadio" class="w-5 h-5 text-blue-600">
-                    <span class="text-gray-900 font-medium">ID Number</span>
-                </label>
-                <label class="flex items-center gap-3 cursor-pointer">
-                    <input type="radio" name="searchCriteria" id="formRadio" class="w-5 h-5 text-blue-600">
-                    <span class="text-gray-900 font-medium">Form Number</span>
-                </label>
-            </div>
-            <p class="text-xs text-gray-500 mt-2" id="idHelp">Enter a 9-digit number (e.g., 123456789).</p>
-            <p class="text-xs text-gray-500 mt-1" id="formHelp">Enter 7 digits or less (e.g., 1234567).</p>
-        </fieldset>
+        <div class="mb-6">
+            <fieldset>
+                <legend class="block text-sm font-semibold text-gray-700 mb-4">Search Criteria (select one):</legend>
+                <div class="flex flex-col md:flex-row gap-4">
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="radio" name="searchCriteria" id="idRadio" class="w-5 h-5 text-blue-600" aria-describedby="idHelp">
+                        <span class="text-gray-900 font-medium">ID Number</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer">
+                        <input type="radio" name="searchCriteria" id="formRadio" class="w-5 h-5 text-blue-600" aria-describedby="formHelp">
+                        <span class="text-gray-900 font-medium">Form Number</span>
+                    </label>
+                </div>
+                <p id="idHelp" class="text-xs text-gray-500 mt-2">Enter a 9-digit number (e.g., 123456789).</p>
+                <p id="formHelp" class="text-xs text-gray-500 mt-1">Enter 7 digits or less (e.g., 1234567).</p>
+            </fieldset>
+        </div>
 
         <div class="flex flex-col md:flex-row gap-4">
             <input type="text" id="searchInput"
                    placeholder="Enter your search value (e.g., 123456789 for ID)..."
-                   class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900">
+                   class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900"
+                   aria-label="Search input for ID or Form number">
 
             <button id="searchBtn"
-                    class="px-10 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                    class="px-10 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
+                    aria-label="Perform search">
                 <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
+
                 <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
                     <path fill="currentColor" class="opacity-75"
                           d="M4 12a8 8 0 018-8V0C5 0 0 5 0 12h4z"></path>
                 </svg>
+
                 Search
             </button>
 
             <button id="clearBtn"
-                    class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600 transition">
+                    class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600 transition"
+                    aria-label="Clear search and reset form">
                 Clear
             </button>
         </div>
@@ -134,9 +144,11 @@
                 </div>
             </div>
         </div>
+
         <div id="recordData" class="space-y-6 max-h-96 overflow-y-auto pt-6"></div>
     </section>
 
+    <!-- Footer -->
     <footer class="mt-12 py-6 text-center text-gray-500 text-sm">
         <p>&copy; <span id="currentYear"></span> Guyana Elections Commission (GECOM). All rights reserved.</p>
     </footer>
@@ -144,7 +156,7 @@
 </div>
 
 <script>
-    // ======================= CONFIG =======================
+    // ================= CONFIGURATION =================
     const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
 
     const idRadio = document.getElementById("idRadio");
@@ -171,22 +183,6 @@
         hideResults();
     }
 
-    function validateInput(value, criteria) {
-        if (!value.trim()) return "Please enter a search value.";
-        if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
-            return "ID Number must be exactly 9 digits.";
-        }
-        if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
-            return "Form Number must be 7 digits or less.";
-        }
-        return null;
-    }
-
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorBox.classList.remove("hidden");
-    }
-
     function hideError() {
         errorBox.classList.add("hidden");
     }
@@ -197,22 +193,36 @@
         recordCount.textContent = "";
     }
 
+    function validateInput(value, criteria) {
+        if (!value.trim()) return "Please enter a search value.";
+        if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
+            return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
+        }
+        if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
+            return "Form Number must be 7 digits or less. Please enter a valid Form number.";
+        }
+        return null;
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorBox.classList.remove("hidden");
+    }
+
     function showResults(records) {
         recordCount.textContent = `${records.length} record(s) found`;
         recordData.innerHTML = "";
-
-        records.forEach((record, index) => {
+        records.forEach(record => {
             const div = document.createElement("div");
             div.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
             div.innerHTML = `
-                <p class="text-sm text-gray-600 font-medium">Name: <span class="text-gray-900">${record.NAME_OF_REGISTRANT}</span></p>
-                <p class="text-sm text-gray-600 font-medium">ID Number: <span class="text-gray-900">${record.ID_NO}</span></p>
-                <p class="text-sm text-gray-600 font-medium">Form Number: <span class="text-gray-900">${record.FORM_NO}</span></p>
-                <p class="text-sm text-gray-600 font-medium">Status: <span class="text-gray-900">${record.STATUS}</span></p>
+                <p><strong>Name:</strong> ${record.NAME_OF_REGISTRANT}</p>
+                <p><strong>ID Number:</strong> ${record.ID_NO}</p>
+                <p><strong>Form Number:</strong> ${record.FORM_NO}</p>
+                <p><strong>Status:</strong> ${record.STATUS}</p>
             `;
             recordData.appendChild(div);
         });
-
         resultsBox.classList.remove("hidden");
     }
 
@@ -247,9 +257,7 @@
 
             const res = await fetch(EDGE_FUNCTION_URL, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
@@ -272,9 +280,7 @@
 
     searchBtn.addEventListener("click", searchRecords);
     clearBtn.addEventListener("click", clearSearch);
-    searchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") searchRecords();
-    });
+    searchInput.addEventListener("keypress", (e) => { if (e.key === "Enter") searchRecords(); });
 </script>
 </body>
 </html>
