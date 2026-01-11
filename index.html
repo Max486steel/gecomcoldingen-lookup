@@ -239,8 +239,13 @@
     </footer>
 
     <script>
-        const SUPABASE_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU";
+        // ============================================================================
+        // CONFIGURATION - Replace with your actual Edge Function URL
+        // ============================================================================
+        const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
+        
+        // No API keys needed in client - Edge Function handles authentication
+        // ============================================================================
 
         const idRadio = document.getElementById("idRadio");
         const formRadio = document.getElementById("formRadio");
@@ -337,39 +342,55 @@
             hideResults();
 
             try {
-                // Use the secure function instead of direct table access
+                // Prepare search parameters
                 const searchParams = {
                     search_id_no: idRadio.checked ? value : null,
                     search_form_no: formRadio.checked ? value : null
                 };
 
-                const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
-                console.log("Fetching URL:", EDGE_FUNCTION_URL);
+                console.log("Calling Edge Function:", EDGE_FUNCTION_URL);
                 console.log("Search params:", searchParams);
 
+                // Call Edge Function - NO API KEY NEEDED
                 const response = await fetch(EDGE_FUNCTION_URL, {
                     method: 'POST',
                     headers: {
-                        apikey: SUPABASE_ANON_KEY,
-                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
                         "Content-Type": "application/json"
+                        // No Authorization header - Edge Function handles auth
                     },
                     body: JSON.stringify(searchParams)
                 });
 
                 console.log("Response status:", response.status);
 
+                // Handle rate limiting
+                if (response.status === 429) {
+                    const data = await response.json();
+                    const retryAfter = data.retryAfter || 3600;
+                    const minutes = Math.ceil(retryAfter / 60);
+                    showError(`Too many requests. Please try again in ${minutes} minute${minutes !== 1 ? 's' : ''}.`);
+                    return;
+                }
+
+                // Handle other errors
                 if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error("Error response:", errorText);
-                    if (response.status === 429) throw new Error("Too many requests. Please try again later.");
-                    else throw new Error(`Server error (${response.status}). Please try again.`);
+                    let errorText = "Unable to search. Please try again.";
+                    try {
+                        const errorData = await response.json();
+                        if (errorData.error) {
+                            errorText = errorData.error;
+                        }
+                    } catch (e) {
+                        // Use default error text
+                    }
+                    showError(errorText);
+                    return;
                 }
 
                 const result = await response.json();
                 console.log("Result:", result);
 
-                if (result.length === 0) {
+                if (!result || result.length === 0) {
                     noResultModal.classList.remove("hidden");
                     gettingStarted.classList.add("hidden");
                 } else {
@@ -377,7 +398,7 @@
                 }
             } catch (err) {
                 console.error("Fetch error:", err);
-                showError("Unable to connect to the database. Please check your internet connection and try again.");
+                showError("Unable to connect to the server. Please check your internet connection and try again.");
             } finally {
                 searchBtn.disabled = false;
                 searchIcon.classList.remove("hidden");
@@ -455,9 +476,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
