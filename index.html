@@ -36,443 +36,245 @@
         }
     </style>
 </head>
-
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 professional-bg p-4 md:p-6">
-    <div class="max-w-5xl mx-auto">
+<div class="max-w-5xl mx-auto">
 
-        <!-- Header -->
-        <header class="text-center mb-8 md:mb-12 fade-in">
-            <div class="flex flex-col items-center justify-center gap-6 mb-6">
-                <div class="w-20 h-20 md:w-24 md:h-24 bg-blue-600 rounded-full flex items-center justify-center shadow-xl">
-                    <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
-
-                <div>
-                    <h1 class="text-5xl md:text-7xl font-extrabold text-black mb-2 drop-shadow-lg">
-                        COLDINGEN ID CARD STATUS
-                    </h1>
-                    <p class="text-gray-600 text-lg md:text-xl font-medium">Official GECOM Coldingen Portal</p>
-                </div>
-            </div>
-
-            <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
-                Search for records using ID card number or Form number to check your Identification Card status.
-            </p>
-        </header>
-
-        <!-- Search Box -->
-        <section class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 md:p-10 mb-8 fade-in border border-gray-200/50">
-            <div class="mb-6">
-                <fieldset>
-                    <legend class="block text-sm font-semibold text-gray-700 mb-4">Search Criteria (select one):</legend>
-                    <div class="flex flex-col md:flex-row gap-4">
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="searchCriteria" id="idRadio" class="w-5 h-5 text-blue-600" aria-describedby="idHelp">
-                            <span class="text-gray-900 font-medium">ID Number</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="radio" name="searchCriteria" id="formRadio" class="w-5 h-5 text-blue-600" aria-describedby="formHelp">
-                            <span class="text-gray-900 font-medium">Form Number</span>
-                        </label>
-                    </div>
-                    <p id="idHelp" class="text-xs text-gray-500 mt-2">Enter a 9-digit number (e.g., 123456789).</p>
-                    <p id="formHelp" class="text-xs text-gray-500 mt-1">Enter 7 digits or less (e.g., 1234567).</p>
-                </fieldset>
-            </div>
-
-            <div class="flex flex-col md:flex-row gap-4">
-                <input type="text" id="searchInput"
-                       placeholder="Enter your search value (e.g., 123456789 for ID)..."
-                       class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900"
-                       aria-label="Search input for ID or Form number">
-
-                <button id="searchBtn"
-                        class="px-10 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2"
-                        aria-label="Perform search">
-                    <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-
-                    <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
-                        <path fill="currentColor" class="opacity-75"
-                              d="M4 12a8 8 0 018-8V0C5 0 0 5 0 12h4z"></path>
-                    </svg>
-
-                    Search
-                </button>
-
-                <button id="clearBtn"
-                        class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600 transition"
-                        aria-label="Clear search and reset form">
-                    Clear
-                </button>
-            </div>
-        </section>
-
-        <!-- Error Box -->
-        <div id="errorBox" class="bg-red-50 border border-red-200 rounded-xl p-6 hidden fade-in">
-            <div class="flex items-start gap-3">
-                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Header -->
+    <header class="text-center mb-8 md:mb-12 fade-in">
+        <div class="flex flex-col items-center justify-center gap-6 mb-6">
+            <div class="w-20 h-20 md:w-24 md:h-24 bg-blue-600 rounded-full flex items-center justify-center shadow-xl">
+                <svg class="w-10 h-10 md:w-12 md:h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
+            </div>
+            <div>
+                <h1 class="text-5xl md:text-7xl font-extrabold text-black mb-2 drop-shadow-lg">
+                    COLDINGEN ID CARD STATUS
+                </h1>
+                <p class="text-gray-600 text-lg md:text-xl font-medium">Official GECOM Coldingen Portal</p>
+            </div>
+        </div>
+        <p class="text-gray-500 text-base md:text-lg max-w-2xl mx-auto">
+            Search for records using ID card number or Form number to check your Identification Card status.
+        </p>
+    </header>
+
+    <!-- Search Box -->
+    <section class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8 md:p-10 mb-8 fade-in border border-gray-200/50">
+        <fieldset class="mb-6">
+            <legend class="block text-sm font-semibold text-gray-700 mb-4">Search Criteria (select one):</legend>
+            <div class="flex flex-col md:flex-row gap-4">
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="radio" name="searchCriteria" id="idRadio" class="w-5 h-5 text-blue-600">
+                    <span class="text-gray-900 font-medium">ID Number</span>
+                </label>
+                <label class="flex items-center gap-3 cursor-pointer">
+                    <input type="radio" name="searchCriteria" id="formRadio" class="w-5 h-5 text-blue-600">
+                    <span class="text-gray-900 font-medium">Form Number</span>
+                </label>
+            </div>
+            <p class="text-xs text-gray-500 mt-2" id="idHelp">Enter a 9-digit number (e.g., 123456789).</p>
+            <p class="text-xs text-gray-500 mt-1" id="formHelp">Enter 7 digits or less (e.g., 1234567).</p>
+        </fieldset>
+
+        <div class="flex flex-col md:flex-row gap-4">
+            <input type="text" id="searchInput"
+                   placeholder="Enter your search value (e.g., 123456789 for ID)..."
+                   class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900">
+
+            <button id="searchBtn"
+                    class="px-10 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                <svg id="searchIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <svg id="loadingIcon" class="w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+                    <path fill="currentColor" class="opacity-75"
+                          d="M4 12a8 8 0 018-8V0C5 0 0 5 0 12h4z"></path>
+                </svg>
+                Search
+            </button>
+
+            <button id="clearBtn"
+                    class="px-6 py-3 bg-gray-500 text-white rounded-lg shadow-lg hover:bg-gray-600 transition">
+                Clear
+            </button>
+        </div>
+    </section>
+
+    <!-- Error Box -->
+    <div id="errorBox" class="bg-red-50 border border-red-200 rounded-xl p-6 hidden fade-in">
+        <div class="flex items-start gap-3">
+            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4m0 4h.01M21 12A9 9 0 113 12a9 9 0 0118 0z" />
+            </svg>
+            <div>
+                <h3 class="font-semibold text-red-800 mb-1">Error</h3>
+                <p id="errorMessage" class="text-red-700 text-sm"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <section id="resultsBox" class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 hidden fade-in border border-gray-200/50">
+        <div class="sticky top-0 bg-white/80 backdrop-blur-lg -mx-10 px-10 pt-10 pb-6 border-b border-gray-200/50">
+            <div class="flex items-center gap-4 mb-2">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                </div>
                 <div>
-                    <h3 class="font-semibold text-red-800 mb-1">Error</h3>
-                    <p id="errorMessage" class="text-red-700 text-sm"></p>
+                    <h2 class="text-3xl font-bold text-gray-900">Search Results</h2>
+                    <p id="recordCount" class="text-gray-600"></p>
                 </div>
             </div>
         </div>
-
-        <!-- Results -->
-        <section id="resultsBox" class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-2xl p-10 hidden fade-in border border-gray-200/50">
-            <div class="sticky top-0 bg-white/80 backdrop-blur-lg -mx-10 px-10 pt-10 pb-6 border-b border-gray-200/50">
-                <div class="flex items-center gap-4 mb-2">
-                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zm-4 7a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-3xl font-bold text-gray-900">Search Results</h2>
-                        <p id="recordCount" class="text-gray-600"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="recordData" class="space-y-6 max-h-96 overflow-y-auto pt-6"></div>
-        </section>
-
-        <!-- Getting Started Notice (shows by default) -->
-        <section id="gettingStarted" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in">
-            <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
-            <p class="text-blue-800 mb-4 font-medium">
-                Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
-            </p>
-            <p class="text-blue-800 mb-4 font-medium">
-                Office working hours are as follows:
-            </p>
-            <ul class="text-blue-700 text-sm font-medium mb-4 text-center max-w-md mx-auto">
-                <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
-                <li>Friday: 8:00 AM to 3:30 PM</li>
-                <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
-            </ul>
-            <p class="text-blue-800 mb-2 font-medium">
-                <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
-            </p>
-            <p class="text-blue-800 mb-4 font-medium">
-                <strong>Contact Numbers:</strong> 2704497 / 2704498
-            </p>
-            <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
-        </section>
-
-        <!-- Notice - appears below results -->
-        <section id="importantNotice" class="bg-blue-50 border border-blue-200 rounded-xl p-10 text-center fade-in mt-8 hidden">
-            <h3 class="font-semibold text-blue-900 text-2xl mb-4">Important Notice for Registrants</h3>
-            <p class="text-blue-800 mb-4 font-medium">
-                Please note that GECOM does not accept authorization for ID card collection. Registrants must collect their ID cards in person.
-            </p>
-            <p class="text-blue-800 mb-4 font-medium">
-                Office working hours are as follows:
-            </p>
-            <ul class="text-blue-700 text-sm font-medium mb-4 text-center max-w-md mx-auto">
-                <li>Monday to Thursday: 8:00 AM to 4:30 PM</li>
-                <li>Friday: 8:00 AM to 3:30 PM</li>
-                <li>Lunch break: 12:00 PM to 1:00 PM daily</li>
-            </ul>
-            <p class="text-blue-800 mb-2 font-medium">
-                <strong>Location:</strong> Lot 1 Guysuco Compound, Coldingen, East Coast Demerara
-            </p>
-            <p class="text-blue-800 mb-4 font-medium">
-                <strong>Contact Numbers:</strong> 2704497 / 2704498
-            </p>
-            <p class="text-blue-700 text-sm font-medium">Ensure you arrive within operating hours for assistance.</p>
-        </section>
-
-    </div>
-
-    <!-- No Result Popup Modal -->
-    <div id="noResultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
-            <div class="flex flex-col items-center text-center">
-                <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-10 h-10 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-3">ID Not Ready</h3>
-                <p class="text-gray-700 text-lg mb-6">
-                    Sorry, your Identification Card is not ready. Please check again next week. Thank You for your patience.
-                </p>
-                <button id="closeModalBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Validation Error Popup Modal -->
-    <div id="validationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 fade-in">
-            <div class="flex flex-col items-center text-center">
-                <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                    <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-3">Invalid Input</h3>
-                <p id="validationMessage" class="text-gray-700 text-lg mb-6"></p>
-                <button id="closeValidationBtn" class="px-8 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition font-semibold">
-                    OK
-                </button>
-            </div>
-        </div>
-    </div>
+        <div id="recordData" class="space-y-6 max-h-96 overflow-y-auto pt-6"></div>
+    </section>
 
     <footer class="mt-12 py-6 text-center text-gray-500 text-sm">
         <p>&copy; <span id="currentYear"></span> Guyana Elections Commission (GECOM). All rights reserved.</p>
     </footer>
 
-    <script>
-        // ============================================================================
-        // CONFIGURATION - Replace with your actual Edge Function URL
-        // ============================================================================
-        const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
-        
-        // No API keys needed in client - Edge Function handles authentication
-        // ============================================================================
+</div>
 
-        const idRadio = document.getElementById("idRadio");
-        const formRadio = document.getElementById("formRadio");
-        const searchInput = document.getElementById("searchInput");
-        const searchBtn = document.getElementById("searchBtn");
-        const clearBtn = document.getElementById("clearBtn");
-        const searchIcon = document.getElementById("searchIcon");
-        const loadingIcon = document.getElementById("loadingIcon");
-        const errorBox = document.getElementById("errorBox");
-        const errorMessage = document.getElementById("errorMessage");
-        const resultsBox = document.getElementById("resultsBox");
-        const recordCount = document.getElementById("recordCount");
-        const recordData = document.getElementById("recordData");
-        const gettingStarted = document.getElementById("gettingStarted");
-        const importantNotice = document.getElementById("importantNotice");
-        const noResultModal = document.getElementById("noResultModal");
-        const closeModalBtn = document.getElementById("closeModalBtn");
-        const validationModal = document.getElementById("validationModal");
-        const validationMessage = document.getElementById("validationMessage");
-        const closeValidationBtn = document.getElementById("closeValidationBtn");
-        const currentYear = document.getElementById("currentYear");
+<script>
+    // ======================= CONFIG =======================
+    const EDGE_FUNCTION_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom";
 
-        currentYear.textContent = new Date().getFullYear();
+    const idRadio = document.getElementById("idRadio");
+    const formRadio = document.getElementById("formRadio");
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const searchIcon = document.getElementById("searchIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
+    const errorBox = document.getElementById("errorBox");
+    const errorMessage = document.getElementById("errorMessage");
+    const resultsBox = document.getElementById("resultsBox");
+    const recordCount = document.getElementById("recordCount");
+    const recordData = document.getElementById("recordData");
+    const currentYear = document.getElementById("currentYear");
 
-        closeModalBtn.addEventListener("click", () => {
-            noResultModal.classList.add("hidden");
+    currentYear.textContent = new Date().getFullYear();
+
+    function clearSearch() {
+        searchInput.value = "";
+        idRadio.checked = false;
+        formRadio.checked = false;
+        hideError();
+        hideResults();
+    }
+
+    function validateInput(value, criteria) {
+        if (!value.trim()) return "Please enter a search value.";
+        if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
+            return "ID Number must be exactly 9 digits.";
+        }
+        if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
+            return "Form Number must be 7 digits or less.";
+        }
+        return null;
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorBox.classList.remove("hidden");
+    }
+
+    function hideError() {
+        errorBox.classList.add("hidden");
+    }
+
+    function hideResults() {
+        resultsBox.classList.add("hidden");
+        recordData.innerHTML = "";
+        recordCount.textContent = "";
+    }
+
+    function showResults(records) {
+        recordCount.textContent = `${records.length} record(s) found`;
+        recordData.innerHTML = "";
+
+        records.forEach((record, index) => {
+            const div = document.createElement("div");
+            div.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
+            div.innerHTML = `
+                <p class="text-sm text-gray-600 font-medium">Name: <span class="text-gray-900">${record.NAME_OF_REGISTRANT}</span></p>
+                <p class="text-sm text-gray-600 font-medium">ID Number: <span class="text-gray-900">${record.ID_NO}</span></p>
+                <p class="text-sm text-gray-600 font-medium">Form Number: <span class="text-gray-900">${record.FORM_NO}</span></p>
+                <p class="text-sm text-gray-600 font-medium">Status: <span class="text-gray-900">${record.STATUS}</span></p>
+            `;
+            recordData.appendChild(div);
         });
 
-        noResultModal.addEventListener("click", (e) => {
-            if (e.target === noResultModal) {
-                noResultModal.classList.add("hidden");
-            }
-        });
+        resultsBox.classList.remove("hidden");
+    }
 
-        closeValidationBtn.addEventListener("click", () => {
-            validationModal.classList.add("hidden");
-        });
+    async function searchRecords() {
+        const value = searchInput.value.trim();
+        const criteria = [];
+        if (idRadio.checked) criteria.push("ID_NO");
+        if (formRadio.checked) criteria.push("FORM_NO");
 
-        validationModal.addEventListener("click", (e) => {
-            if (e.target === validationModal) {
-                validationModal.classList.add("hidden");
-            }
-        });
-
-        idRadio.addEventListener("change", () => { if (idRadio.checked) formRadio.checked = false; });
-        formRadio.addEventListener("change", () => { if (formRadio.checked) idRadio.checked = false; });
-
-        function clearSearch() {
-            searchInput.value = "";
-            idRadio.checked = false;
-            formRadio.checked = false;
-            hideError();
-            hideResults();
-            importantNotice.classList.add("hidden");
-            gettingStarted.classList.remove("hidden");
+        if (criteria.length === 0) {
+            showError("Please select a search criteria.");
+            return;
         }
 
-        function validateInput(value, criteria) {
-            if (!value.trim()) return "Please enter a search value.";
-            if (criteria.includes("ID_NO") && !/^\d{9}$/.test(value)) {
-                return "ID Number must be exactly 9 digits. Please enter a valid 9-digit ID number.";
-            }
-            if (criteria.includes("FORM_NO") && !/^\d{1,7}$/.test(value)) {
-                return "Form Number must be 7 digits or less. Please enter a valid Form Number with a maximum of 7 digits.";
-            }
-            return null;
+        const validationError = validateInput(value, criteria);
+        if (validationError) {
+            showError(validationError);
+            return;
         }
 
-        function showValidationError(message) {
-            validationMessage.textContent = message;
-            validationModal.classList.remove("hidden");
-        }
+        searchBtn.disabled = true;
+        searchIcon.classList.add("hidden");
+        loadingIcon.classList.remove("hidden");
+        hideError();
+        hideResults();
 
-        async function searchRecords() {
-            const value = searchInput.value.trim();
-            const selectedCriteria = [];
-            if (idRadio.checked) selectedCriteria.push("ID_NO");
-            if (formRadio.checked) selectedCriteria.push("FORM_NO");
-            if (selectedCriteria.length === 0) {
-                showValidationError("Please select one search criteria.");
-                return;
-            }
+        try {
+            const payload = {
+                search_id_no: idRadio.checked ? value : null,
+                search_form_no: formRadio.checked ? value : null
+            };
 
-            const validationError = validateInput(value, selectedCriteria);
-            if (validationError) {
-                showValidationError(validationError);
-                return;
-            }
-
-            searchBtn.disabled = true;
-            searchIcon.classList.add("hidden");
-            loadingIcon.classList.remove("hidden");
-            hideError();
-            hideResults();
-
-            try {
-                // Prepare search parameters
-                const searchParams = {
-                    search_id_no: idRadio.checked ? value : null,
-                    search_form_no: formRadio.checked ? value : null
-                };
-
-                console.log("Calling Edge Function:", EDGE_FUNCTION_URL);
-                console.log("Search params:", searchParams);
-
-                // Call Edge Function - NO API KEY NEEDED
-                const response = await fetch(EDGE_FUNCTION_URL, {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json"
-                        // No Authorization header - Edge Function handles auth
-                    },
-                    body: JSON.stringify(searchParams)
-                });
-
-                console.log("Response status:", response.status);
-
-                // Handle rate limiting
-                if (response.status === 429) {
-                    const data = await response.json();
-                    const retryAfter = data.retryAfter || 3600;
-                    const minutes = Math.ceil(retryAfter / 60);
-                    showError(`Too many requests. Please try again in ${minutes} minute${minutes !== 1 ? 's' : ''}.`);
-                    return;
-                }
-
-                // Handle other errors
-                if (!response.ok) {
-                    let errorText = "Unable to search. Please try again.";
-                    try {
-                        const errorData = await response.json();
-                        if (errorData.error) {
-                            errorText = errorData.error;
-                        }
-                    } catch (e) {
-                        // Use default error text
-                    }
-                    showError(errorText);
-                    return;
-                }
-
-                const result = await response.json();
-                console.log("Result:", result);
-
-                if (!result || result.length === 0) {
-                    noResultModal.classList.remove("hidden");
-                    gettingStarted.classList.add("hidden");
-                } else {
-                    showResults(result, value, selectedCriteria.join(" or "));
-                }
-            } catch (err) {
-                console.error("Fetch error:", err);
-                showError("Unable to connect to the server. Please check your internet connection and try again.");
-            } finally {
-                searchBtn.disabled = false;
-                searchIcon.classList.remove("hidden");
-                loadingIcon.classList.add("hidden");
-            }
-        }
-
-        function showError(message) {
-            errorMessage.textContent = message;
-            errorBox.classList.remove("hidden");
-            gettingStarted.classList.add("hidden");
-        }
-
-        function hideError() {
-            errorBox.classList.add("hidden");
-        }
-
-        function hideResults() {
-            resultsBox.classList.add("hidden");
-        }
-
-        function showResults(records, searchValue, searchTypeVal) {
-            recordCount.textContent = `${records.length} record(s) found for ${searchTypeVal.replace(/_/g, " ")}: ${searchValue}`;
-            recordData.innerHTML = "";
-
-            records.forEach((record, index) => {
-                showFullRecord(record, index + 1);
+            const res = await fetch(EDGE_FUNCTION_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
             });
 
-            resultsBox.classList.remove("hidden");
-            importantNotice.classList.remove("hidden");
-            gettingStarted.classList.add("hidden");
-        }
+            if (!res.ok) throw new Error(`Server error (${res.status})`);
 
-        function showFullRecord(record, recordNumber) {
-            const recordDiv = document.createElement("div");
-            recordDiv.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
-            const statusColor = record.STATUS === "COLLECTED" ? "text-green-700 bg-green-100" : "text-green-700 bg-green-100";
-            const statusIcon = record.STATUS === "COLLECTED" 
-                ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />`
-                : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
-            recordDiv.innerHTML = `
-                <div class="flex flex-col items-start gap-2 mb-4">
-                    <h3 class="text-lg font-bold text-gray-900">Record #${recordNumber}</h3>
-                    <span class="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1 ${statusColor}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            ${statusIcon}
-                        </svg>
-                        ${record.STATUS || "UNKNOWN"}
-                    </span>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <p class="text-sm text-gray-600 font-medium">Name of Registrant</p>
-                        <p class="text-base font-semibold text-gray-900">${record.NAME_OF_REGISTRANT || "N/A"}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-medium">ID Number</p>
-                        <p class="text-base font-semibold text-gray-900">${record.ID_NO || "N/A"}</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-600 font-medium">Form Number</p>
-                        <p class="text-base font-semibold text-gray-900">${record.FORM_NO || "N/A"}</p>
-                    </div>
-                </div>
-            `;
-            recordData.appendChild(recordDiv);
-        }
+            const data = await res.json();
 
-        searchBtn.addEventListener("click", searchRecords);
-        clearBtn.addEventListener("click", clearSearch);
-        searchInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") searchRecords();
-        });
-    </script>
+            if (data.length === 0) showError("No records found.");
+            else showResults(data);
+
+        } catch (err) {
+            console.error(err);
+            showError("Unable to connect to the server. Please try again later.");
+        } finally {
+            searchBtn.disabled = false;
+            searchIcon.classList.remove("hidden");
+            loadingIcon.classList.add("hidden");
+        }
+    }
+
+    searchBtn.addEventListener("click", searchRecords);
+    clearBtn.addEventListener("click", clearSearch);
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") searchRecords();
+    });
+</script>
 </body>
 </html>
