@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COLDINGEN ID CARD STATUS</title>
+    <title>COLDINGEN REGISTRATION OFFICE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -52,9 +52,9 @@
 
                 <div>
                     <h1 class="text-5xl md:text-7xl font-extrabold text-black mb-2 drop-shadow-lg">
-                        COLDINGEN ID CARD STATUS
+                        COLDINGEN REGISTRATION OFFICE
                     </h1>
-                    <p class="text-gray-600 text-lg md:text-xl font-medium">Official GECOM Coldingen Portal</p>
+                    <p class="text-gray-600 text-lg md:text-xl font-medium">IDENTIFICATION CARD CHECKER</p>
                 </div>
             </div>
 
@@ -239,9 +239,8 @@
     </footer>
 
     <script>
-        console.log("JS loaded successfully"); // DEBUG: Should appear in console
-
         const SUPABASE_URL = "https://fvjqufvcoqtfmfuoqssh.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2anF1ZnZjb3F0Zm1mdW9xc3NoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI3ODIyMjYsImV4cCI6MjA3ODM1ODIyNn0.nlOTSccbg-u4GqlfoX1u7MlmrlGRCPG-7kjxNQ2RRYU";
 
         const idRadio = document.getElementById("idRadio");
         const formRadio = document.getElementById("formRadio");
@@ -263,8 +262,6 @@
         const validationMessage = document.getElementById("validationMessage");
         const closeValidationBtn = document.getElementById("closeValidationBtn");
         const currentYear = document.getElementById("currentYear");
-
-        console.log("Elements loaded:", { searchBtn, clearBtn }); // DEBUG: Check if elements exist
 
         currentYear.textContent = new Date().getFullYear();
 
@@ -292,7 +289,6 @@
         formRadio.addEventListener("change", () => { if (formRadio.checked) idRadio.checked = false; });
 
         function clearSearch() {
-            console.log("Clear button clicked"); // DEBUG
             searchInput.value = "";
             idRadio.checked = false;
             formRadio.checked = false;
@@ -319,7 +315,6 @@
         }
 
         async function searchRecords() {
-            console.log("Search button clicked"); // DEBUG
             const value = searchInput.value.trim();
             const selectedCriteria = [];
             if (idRadio.checked) selectedCriteria.push("ID_NO");
@@ -342,20 +337,27 @@
             hideResults();
 
             try {
+                // Use the secure function instead of direct table access
                 const searchParams = {
                     search_id_no: idRadio.checked ? value : null,
                     search_form_no: formRadio.checked ? value : null
                 };
 
-                const url = `https://fvjqufvcoqtfmfuoqssh.supabase.co/functions/v1/search-gecom`;
+                const url = `${SUPABASE_URL}/rest/v1/rpc/search_gecom_id`;
+                console.log("Fetching URL:", url);
+                console.log("Search params:", searchParams);
 
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
+                        apikey: SUPABASE_ANON_KEY,
+                        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify(searchParams)
                 });
+
+                console.log("Response status:", response.status);
 
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -365,11 +367,7 @@
                 }
 
                 const result = await response.json();
-
-                // FIXED: Handle Edge Function errors properly
-                if (result.error) {
-                    throw new Error(result.error);
-                }
+                console.log("Result:", result);
 
                 if (result.length === 0) {
                     noResultModal.classList.remove("hidden");
@@ -379,7 +377,7 @@
                 }
             } catch (err) {
                 console.error("Fetch error:", err);
-                showError("Unable to connect to the database. Please check your internet connection and try again.");
+                showError("TRY AGAIN LATER.");
             } finally {
                 searchBtn.disabled = false;
                 searchIcon.classList.remove("hidden");
@@ -417,10 +415,7 @@
         function showFullRecord(record, recordNumber) {
             const recordDiv = document.createElement("div");
             recordDiv.className = "bg-gray-50 rounded-lg p-6 border border-gray-200 fade-in";
-            // FIXED: Distinct status colors
-            const statusColor = record.STATUS === "COLLECTED" 
-                ? "text-green-700 bg-green-100" 
-                : "text-yellow-700 bg-yellow-100";
+            const statusColor = record.STATUS === "COLLECTED" ? "text-green-700 bg-green-100" : "text-green-700 bg-green-100";
             const statusIcon = record.STATUS === "COLLECTED" 
                 ? `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />`
                 : `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
@@ -452,14 +447,11 @@
             recordData.appendChild(recordDiv);
         }
 
-        // FIXED: Ensure event listeners are attached
         searchBtn.addEventListener("click", searchRecords);
         clearBtn.addEventListener("click", clearSearch);
         searchInput.addEventListener("keypress", (e) => {
             if (e.key === "Enter") searchRecords();
         });
-
-        console.log("Event listeners attached"); // DEBUG: Should appear after elements load
     </script>
 </body>
 </html>
